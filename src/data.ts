@@ -8,8 +8,6 @@ import {
   Category,
 } from "./types";
 
-import coloredLensImg from "./assets/images/colored_lens_eye_1783352024147.jpg";
-import contactLensImg from "./assets/images/contact_lens_product_1783352001276.jpg";
 
 export const SLIDES: Slide[] = [
   {
@@ -19,7 +17,7 @@ export const SLIDES: Slide[] = [
     subtitle:
       "عدسات لاصقة طبية وتجميلية معقمة، تجمع بين الجودة العالية والألوان الطبيعية في العالم العربي.",
     buttonText: "اكتشف قصة لينا",
-    image: "https://i.postimg.cc/rFbs54b9/file-00000000f34c81f484ecd3e81a1ff5f3.png",
+    image: "/uploads/1.png",
   },
   {
     id: 2,
@@ -28,7 +26,7 @@ export const SLIDES: Slide[] = [
     subtitle:
       "مجموعة عدساتنا الملونة المستوحاة من تفاصيل الطبيعة لتعزيز جاذبية عينيك براحة مثالية وترطيب يدوم طوال اليوم.",
     buttonText: "تصفح الألوان الفاخرة",
-    image: coloredLensImg,
+    image: "/uploads/2.png",
   },
   {
     id: 3,
@@ -37,7 +35,7 @@ export const SLIDES: Slide[] = [
     subtitle:
       "عدسات شفافة ومحاليل رعاية معززة بحمض الهيالورونيك الحيوي لترطيب مستمر وحماية قصوى للعيون الحساسة.",
     buttonText: "تسوق عدسات هايدرو",
-    image: contactLensImg,
+    image: "/uploads/3.png",
   },
 ];
 

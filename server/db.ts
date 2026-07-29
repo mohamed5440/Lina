@@ -62,7 +62,7 @@ export const dbState: DBState = {
       subtitle:
         "عدسات لاصقة طبية وتجميلية معقمة، تجمع بين الجودة العالية والألوان الطبيعية في العالم العربي.",
       buttonText: "اكتشف قصة لينا",
-      image: "https://i.postimg.cc/rFbs54b9/file-00000000f34c81f484ecd3e81a1ff5f3.png",
+      image: "/uploads/1.png",
     },
     {
       id: 2,
@@ -71,7 +71,7 @@ export const dbState: DBState = {
       subtitle:
         "مجموعة عدساتنا الملونة المستوحاة من تفاصيل الطبيعة لتعزيز جاذبية عينيك براحة مثالية وترطيب يدوم طوال اليوم.",
       buttonText: "تصفح الألوان الفاخرة",
-      image: "/src/assets/images/colored_lens_eye_1783352024147.jpg",
+      image: "/uploads/2.png",
     },
     {
       id: 3,
@@ -80,97 +80,11 @@ export const dbState: DBState = {
       subtitle:
         "عدسات شفافة ومحاليل رعاية معززة بحمض الهيالورونيك الحيوي لترطيب مستمر وحماية قصوى للعيون الحساسة.",
       buttonText: "تسوق عدسات هايدرو",
-      image: "/src/assets/images/contact_lens_product_1783352001276.jpg",
+      image: "/uploads/3.png",
     },
   ],
 
-  products: [
-    {
-      id: 101,
-      name: "عدسات لينا - بندقي طبيعي (Natural Hazel)",
-      price: 180,
-      oldPrice: 220,
-      badgeText: "توفير حتى 18%",
-      category: "colored",
-      description:
-        "عدسات ملونة بلون بندقي دافئ طبيعي للغاية، تندمج بنعومة مع لون عينيك لتعطيك بريقاً ساحراً وجذاباً. مصممة بتقنية متطورة لترطيب مستمر وحماية فائقة من الجفاف طوال اليوم.",
-      image: "/src/assets/images/colored_lens_eye_1783352024147.jpg",
-      waterContent: "43%",
-      diameter: "14.2 مم",
-      duration: "شهرية (علبة بها عدستان)",
-      isNew: true,
-    },
-    {
-      id: 102,
-      name: "عدسات لينا - رمادي سماوي (Sky Gray)",
-      price: 180,
-      oldPrice: 210,
-      category: "colored",
-      description:
-        "عدسات ملونة بلون رمادي ساحر مع لمسة خفيفة من الزرقة السماوية، مثالية للمناسبات والإطلالات اليومية المتميزة. توفر راحة فائقة ونفاذية عالية للأكسجين.",
-      image: "/src/assets/images/colored_lens_eye_1783352024147.jpg",
-      waterContent: "43%",
-      diameter: "14.2 مم",
-      duration: "شهرية (علبة بها عدستان)",
-      isNew: true,
-    },
-    {
-      id: 103,
-      name: "عدسات لينا - أخضر زيتي (Olive Green)",
-      price: 190,
-      oldPrice: 230,
-      badgeText: "توفير حتى 17%",
-      category: "colored",
-      description:
-        "درجة فريدة من الأخضر الهادئ الممزوج بالعسلي الدافئ لإطلالة أنيقة ملفتة للأنظار ومفعمة بالحيوية والجمال الطبيعي.",
-      image: "/src/assets/images/colored_lens_eye_1783352024147.jpg",
-      waterContent: "43%",
-      diameter: "14.2 مم",
-      duration: "شهرية (علبة بها عدستان)",
-      isNew: false,
-    },
-    {
-      id: 104,
-      name: "عدسات هيدروكلير الطبية الشفافة",
-      price: 250,
-      oldPrice: 295,
-      category: "clear",
-      description:
-        "عدسات طبية شفافة مصممة للارتداء اليومي المريح، توفر تصحيحاً فائقاً للنظر ونفاذية أكسجين ممتازة مع مقاومة عالية لتراكم الرواسب.",
-      image: "/src/assets/images/contact_lens_product_1783352001276.jpg",
-      waterContent: "55%",
-      diameter: "14.0 مم",
-      duration: "شهرية (علبة بها 6 عدسات)",
-      isNew: true,
-    },
-    {
-      id: 105,
-      name: "عدسات بيوفيو اليومية المريحة",
-      price: 120,
-      oldPrice: 150,
-      category: "clear",
-      description:
-        "عدسات طبية شفافة للاستخدام اليومي لمرة واحدة (يومية). الاختيار الأمثل للسفر وممارسة الرياضة والراحة القصوى دون الحاجة لمحاليل تنظيف.",
-      image: "/src/assets/images/contact_lens_product_1783352001276.jpg",
-      waterContent: "58%",
-      diameter: "14.2 مم",
-      duration: "يومية (علبة بها 10 عدسات)",
-      isNew: false,
-    },
-    {
-      id: 106,
-      name: "محلول لينا متعدد الأغراض - 360 مل",
-      price: 90,
-      category: "solutions",
-      description:
-        "المحلول المتكامل لتعقّيم، تنظيف، شطف وترطيب جميع أنواع العدسات اللاصقة اللينة. يحتوي على حمض الهيالورونيك لضمان أقصى درجات الترطيب الممتد والراحة للعين.",
-      image: "/src/assets/images/hero_orange_1783351493212.jpg",
-      waterContent: "-",
-      diameter: "-",
-      duration: "صلاحية 3 أشهر بعد الفتح",
-      isNew: false,
-    },
-  ],
+  products: [],
 
   shippingRates: [
     { governorate: "القاهرة", price: 50 },
@@ -454,42 +368,23 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
       );
     }
   } else {
-    // Force update slide 1 image if it contains the old local image path
+    // Force update slide images if they contain old paths
     try {
-      await dbPool.query(
-        "UPDATE slides SET image = ? WHERE id = 1 AND (image LIKE '%hero_orange%' OR image = '/src/assets/images/hero_orange_1783351493212.jpg')",
-        ["https://i.postimg.cc/rFbs54b9/file-00000000f34c81f484ecd3e81a1ff5f3.png"]
-      );
+      await dbPool.query("UPDATE slides SET image = '/uploads/1.png' WHERE id = 1");
+      await dbPool.query("UPDATE slides SET image = '/uploads/2.png' WHERE id = 2");
+      await dbPool.query("UPDATE slides SET image = '/uploads/3.png' WHERE id = 3");
     } catch (e) {
-      console.error("⚠️ Failed to update legacy slide 1 image in DB:", e);
+      console.error("⚠️ Failed to update slide images in DB:", e);
     }
   }
 
-  // Seed Products
-  const [productsCount] = await dbPool.query(
-    "SELECT COUNT(*) as count FROM products",
-  );
-  if ((productsCount as any)[0].count === 0) {
-    console.log("🌱 Seeding products into Hostinger MySQL...");
-    for (const prod of dbState.products) {
-      await dbPool.query(
-        "INSERT INTO products (id, name, price, oldPrice, badgeText, category, description, image, waterContent, diameter, duration, isNew) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          prod.id,
-          prod.name,
-          prod.price,
-          prod.oldPrice || null,
-          prod.badgeText || null,
-          prod.category,
-          prod.description,
-          prod.image,
-          prod.waterContent,
-          prod.diameter,
-          prod.duration,
-          prod.isNew ? 1 : 0,
-        ],
-      );
-    }
+  // Remove mock products if they exist
+  try {
+    await dbPool.query(
+      "DELETE FROM products WHERE id IN (101, 102, 103, 104, 105, 106)"
+    );
+  } catch (e) {
+    console.error("⚠️ Failed to delete mock products from MySQL:", e);
   }
 
   // Seed Shipping Rates
