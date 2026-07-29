@@ -8,7 +8,6 @@ import {
   Category,
 } from "./types";
 
-import heroOrangeImg from "./assets/images/hero_orange_1783351493212.jpg";
 import coloredLensImg from "./assets/images/colored_lens_eye_1783352024147.jpg";
 import contactLensImg from "./assets/images/contact_lens_product_1783352001276.jpg";
 
@@ -46,93 +45,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [];
 
 export const INITIAL_CART: CartItem[] = [];
 
-export const PRODUCTS: Product[] = [
-  {
-    id: 101,
-    name: "عدسات لينا - بندقي طبيعي (Natural Hazel)",
-    price: 180,
-    oldPrice: 220,
-    badgeText: "توفير حتى 18%",
-    category: "colored",
-    description:
-      "عدسات ملونة بلون بندقي دافئ طبيعي للغاية، تندمج بنعومة مع لون عينيك لتعطيك بريقاً ساحراً وجذاباً. مصممة بتقنية متطورة لترطيب مستمر وحماية فائقة من الجفاف طوال اليوم.",
-    image: coloredLensImg,
-    waterContent: "43%",
-    diameter: "14.2 مم",
-    duration: "شهرية (علبة بها عدستان)",
-    isNew: true,
-  },
-  {
-    id: 102,
-    name: "عدسات لينا - رمادي سماوي (Sky Gray)",
-    price: 180,
-    oldPrice: 210,
-    category: "colored",
-    description:
-      "عدسات ملونة بلون رمادي ساحر مع لمسة خفيفة من الزرقة السماوية، مثالية للمناسبات والإطلالات اليومية المتميزة. توفر راحة فائقة ونفاذية عالية للأكسجين.",
-    image: coloredLensImg,
-    waterContent: "43%",
-    diameter: "14.2 مم",
-    duration: "شهرية (علبة بها عدستان)",
-    isNew: true,
-  },
-  {
-    id: 103,
-    name: "عدسات لينا - أخضر زيتي (Olive Green)",
-    price: 190,
-    oldPrice: 230,
-    badgeText: "توفير حتى 17%",
-    category: "colored",
-    description:
-      "درجة فريدة من الأخضر الهادئ الممزوج بالعسلي الدافئ لإطلالة أنيقة ملفتة للأنظار ومفعمة بالحيوية والجمال الطبيعي.",
-    image: coloredLensImg,
-    waterContent: "43%",
-    diameter: "14.2 مم",
-    duration: "شهرية (علبة بها عدستان)",
-    isNew: false,
-  },
-  {
-    id: 104,
-    name: "عدسات هيدروكلير الطبية الشفافة",
-    price: 250,
-    oldPrice: 295,
-    category: "clear",
-    description:
-      "عدسات طبية شفافة مصممة للارتداء اليومي المريح، توفر تصحيحاً فائقاً للنظر ونفاذية أكسجين ممتازة مع مقاومة عالية لتراكم الرواسب.",
-    image: contactLensImg,
-    waterContent: "55%",
-    diameter: "14.0 مم",
-    duration: "شهرية (علبة بها 6 عدسات)",
-    isNew: true,
-  },
-  {
-    id: 105,
-    name: "عدسات بيوفيو اليومية المريحة",
-    price: 120,
-    oldPrice: 150,
-    category: "clear",
-    description:
-      "عدسات طبية شفافة للاستخدام اليومي لمرة واحدة (يومية). الاختيار الأمثل للسفر وممارسة الرياضة والراحة القصوى دون الحاجة لمحاليل تنظيف.",
-    image: contactLensImg,
-    waterContent: "58%",
-    diameter: "14.2 مم",
-    duration: "يومية (علبة بها 10 عدسات)",
-    isNew: false,
-  },
-  {
-    id: 106,
-    name: "محلول لينا متعدد الأغراض - 360 مل",
-    price: 90,
-    category: "solutions",
-    description:
-      "المحلول المتكامل لتعقّيم، تنظيف، شطف وترطيب جميع أنواع العدسات اللاصقة اللينة. يحتوي على حمض الهيالورونيك لضمان أقصى درجات الترطيب الممتد والراحة للعين.",
-    image: heroOrangeImg,
-    waterContent: "-",
-    diameter: "-",
-    duration: "صلاحية 3 أشهر بعد الفتح",
-    isNew: false,
-  },
-];
+export const PRODUCTS: Product[] = [];
 
 export const EGYPT_GOVERNORATES = [
   "القاهرة",
