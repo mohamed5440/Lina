@@ -338,7 +338,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const [categoriesCount] = await dbPool.query(
     "SELECT COUNT(*) as count FROM categories",
   );
-  if ((categoriesCount as any)[0].count === 0) {
+  if ((categoriesCount as Array<{ count: number }>)[0].count === 0) {
     console.log("🌱 Seeding categories into Hostinger MySQL...");
     for (const cat of dbState.categories) {
       await dbPool.query(
@@ -352,7 +352,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const [slidesCount] = await dbPool.query(
     "SELECT COUNT(*) as count FROM slides",
   );
-  if ((slidesCount as any)[0].count === 0) {
+  if ((slidesCount as Array<{ count: number }>)[0].count === 0) {
     console.log("🌱 Seeding slides into Hostinger MySQL...");
     for (const slide of dbState.slides) {
       await dbPool.query(
@@ -391,7 +391,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const [ratesCount] = await dbPool.query(
     "SELECT COUNT(*) as count FROM shipping_rates",
   );
-  if ((ratesCount as any)[0].count === 0) {
+  if ((ratesCount as Array<{ count: number }>)[0].count === 0) {
     console.log("🌱 Seeding shipping rates into Hostinger MySQL...");
     for (const rate of dbState.shippingRates) {
       await dbPool.query(
@@ -405,7 +405,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const [contactCount] = await dbPool.query(
     "SELECT COUNT(*) as count FROM contact_info",
   );
-  if ((contactCount as any)[0].count === 0) {
+  if ((contactCount as Array<{ count: number }>)[0].count === 0) {
     console.log("🌱 Seeding contact info into Hostinger MySQL...");
     await dbPool.query(
       "INSERT INTO contact_info (id, whatsapp, phone, email, instagram, facebook, globalSite) VALUES (1, ?, ?, ?, ?, ?, ?)",
@@ -434,7 +434,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const [notifsCount] = await dbPool.query(
     "SELECT COUNT(*) as count FROM notifications",
   );
-  if ((notifsCount as any)[0].count === 0) {
+  if ((notifsCount as Array<{ count: number }>)[0].count === 0) {
     console.log("🌱 Seeding notifications into Hostinger MySQL...");
     for (const notif of dbState.notifications) {
       await dbPool.query(
@@ -448,7 +448,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const [ordersCount] = await dbPool.query(
     "SELECT COUNT(*) as count FROM orders",
   );
-  if ((ordersCount as any)[0].count === 0) {
+  if ((ordersCount as Array<{ count: number }>)[0].count === 0) {
     console.log("🌱 Seeding initial orders into Hostinger MySQL...");
     for (const order of dbState.orders) {
       await dbPool.query(
@@ -481,7 +481,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
   const targetEmail = "sohaib200596@gmail.com";
   const targetHashedPassword = hashPassword("sohaib200596");
 
-  if ((usersCount as any)[0].count === 0) {
+  if ((usersCount as Array<{ count: number }>)[0].count === 0) {
     console.log(
       `🌱 Seeding default admin user (${targetEmail}) into Hostinger MySQL...`,
     );
@@ -494,7 +494,7 @@ export async function createDatabaseSchema(dbPool: mysql.Pool) {
     const [existingAdmin] = await dbPool.query(
       "SELECT * FROM users WHERE username = 'admin'",
     );
-    if ((existingAdmin as any[]).length > 0) {
+    if ((existingAdmin as Array<Record<string, unknown>>).length > 0) {
       console.log(`🔄 Migrating legacy 'admin' user to '${targetEmail}'...`);
       await dbPool.query(
         "UPDATE users SET username = ?, password = ? WHERE username = 'admin'",

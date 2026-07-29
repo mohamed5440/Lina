@@ -72,11 +72,11 @@ const rateLimit = (limit: number, windowMs: number) => {
   };
 };
 
-const handleApiError = (res: express.Response, err: any) => {
+const handleApiError = (res: express.Response, err: unknown) => {
   console.error("🔴 API Error:", err);
   const errorMessage = err instanceof Error ? err.message : String(err);
 
-  if (err && err.isValidationError) {
+  if (err && typeof err === "object" && "isValidationError" in err && err.isValidationError) {
     return res.status(400).json({ error: errorMessage });
   }
 
@@ -368,10 +368,11 @@ async function startServer() {
         success: true,
         message: "تم الاتصال بقاعدة بيانات Hostinger وحفظ الإعدادات بنجاح!",
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string };
       console.error("❌ Test connection to Hostinger MySQL failed:", err);
       res.status(400).json({
-        error: `فشل الاتصال بقاعدة البيانات: ${err?.message || String(err)}`,
+        error: `فشل الاتصال بقاعدة البيانات: ${errorObj?.message || String(err)}`,
       });
     }
   });
@@ -410,11 +411,11 @@ async function startServer() {
           "SELECT * FROM users WHERE username = ?",
           [cleanUsername],
         );
-        const users = rows as any[];
+        const users = rows as Array<Record<string, unknown>>;
         if (users.length > 0) {
           const user = users[0];
           // Timing-safe password verification
-          const isMatch = verifyPassword(cleanPassword, user.password);
+          const isMatch = verifyPassword(cleanPassword, String(user.password || ""));
           if (isMatch) {
             userData = { username: user.username, role: user.role };
             loginSuccess = true;
@@ -512,13 +513,13 @@ async function startServer() {
           "SELECT * FROM users WHERE username = ?",
           [adminUsername],
         );
-        const users = rows as any[];
+        const users = rows as Array<Record<string, unknown>>;
         if (users.length === 0) {
           return res.status(404).json({ error: "المستخدم غير موجود." });
         }
 
         const user = users[0];
-        const isMatch = verifyPassword(cleanCurrent, user.password);
+        const isMatch = verifyPassword(cleanCurrent, String(user.password || ""));
         if (!isMatch) {
           return res
             .status(400)
@@ -702,7 +703,7 @@ async function startServer() {
     try {
       if (dbState.useMySQL && dbState.pool) {
         const [rows] = await dbState.pool.query("SELECT * FROM products");
-        const formatted = (rows as any[]).map((r) => ({
+        const formatted = (rows as Array<Record<string, unknown>>).map((r) => ({
           ...r,
           id: Number(r.id),
           price: Number(r.price),
@@ -825,7 +826,7 @@ async function startServer() {
     try {
       if (dbState.useMySQL && dbState.pool) {
         const [rows] = await dbState.pool.query("SELECT * FROM shipping_rates");
-        const formatted = (rows as any[]).map((r) => ({
+        const formatted = (rows as Array<Record<string, unknown>>).map((r) => ({
           ...r,
           price: Number(r.price),
         }));
@@ -903,8 +904,8 @@ async function startServer() {
         const [rows] = await dbState.pool.query(
           "SELECT * FROM contact_info LIMIT 1",
         );
-        if ((rows as any[]).length > 0) {
-          res.json((rows as any[])[0]);
+        if ((rows as Array<Record<string, unknown>>).length > 0) {
+          res.json((rows as Array<Record<string, unknown>>)[0]);
         } else {
           res.json(dbState.contactInfo);
         }
@@ -965,7 +966,7 @@ async function startServer() {
         const [rows] = await dbState.pool.query(
           "SELECT * FROM notifications ORDER BY id DESC",
         );
-        const formatted = (rows as any[]).map((r) => ({
+        const formatted = (rows as Array<Record<string, unknown>>).map((r) => ({
           ...r,
           id: Number(r.id),
           unread: !!r.unread,
@@ -988,7 +989,7 @@ async function startServer() {
           "INSERT INTO notifications (text, time, unread) VALUES (?, ?, ?)",
           [text, time, unread ? 1 : 0],
         );
-        res.json({ success: true, id: (result as any).insertId });
+        res.json({ success: true, id: (result as unknown as { insertId: number }).insertId });
       } else {
         const newId =
           dbState.notifications.length > 0
@@ -1102,12 +1103,12 @@ async function startServer() {
           "SELECT * FROM order_items",
         );
 
-        const itemsByOrderId: Record<string, any[]> = {};
-        for (const item of itemsRows as any[]) {
-          if (!itemsByOrderId[item.orderId]) {
-            itemsByOrderId[item.orderId] = [];
+        const itemsByOrderId: Record<string, Array<Record<string, unknown>>> = {};
+        for (const item of itemsRows as Array<Record<string, unknown>>) {
+          if (!itemsByOrderId[String(item.orderId)]) {
+            itemsByOrderId[String(item.orderId)] = [];
           }
-          itemsByOrderId[item.orderId].push({
+          itemsByOrderId[String(item.orderId)].push({
             name: item.name,
             price: Number(item.price),
             quantity: item.quantity,
@@ -1115,7 +1116,7 @@ async function startServer() {
           });
         }
 
-        const formattedOrders = (ordersRows as any[]).map((o) => ({
+        const formattedOrders = (ordersRows as Array<Record<string, unknown>>).map((o) => ({
           id: o.id,
           date: o.date,
           customerName: o.customerName,
@@ -1226,12 +1227,12 @@ async function startServer() {
                 value: total,
                 currency: "EGP",
                 contentType: "product",
-                contents: items.map((item: any) => ({
+                contents: items.map((item: { name: string; quantity: number; price: number }) => ({
                   id: item.name,
                   quantity: item.quantity,
                   item_price: item.price,
                 })),
-                contentIds: items.map((item: any) => item.name),
+                contentIds: items.map((item: { name: string }) => item.name),
               },
             }).catch((err) =>
               console.error(
@@ -1310,12 +1311,12 @@ async function startServer() {
               value: total,
               currency: "EGP",
               contentType: "product",
-              contents: items.map((item: any) => ({
+              contents: items.map((item: { name: string; quantity: number; price: number }) => ({
                 id: item.name,
                 quantity: item.quantity,
                 item_price: item.price,
               })),
-              contentIds: items.map((item: any) => item.name),
+              contentIds: items.map((item: { name: string }) => item.name),
             },
           }).catch((err) =>
             console.error(
