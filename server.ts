@@ -1476,9 +1476,22 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Full-stack Server listening on http://0.0.0.0:${PORT}`);
+  });
+
+  server.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      console.warn(`⚠️ Port ${PORT} is already in use. Server may already be running.`);
+      process.exit(0);
+    } else {
+      console.error("❌ Server error:", err);
+      process.exit(1);
+    }
   });
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error("❌ Failed to start server:", err);
+  process.exit(1);
+});

@@ -48,7 +48,7 @@ const Header = memo(function Header({
     // Initialize scroll state
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll, { passive: true } as any);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const isSolid = scrolled || forceSolidBg;

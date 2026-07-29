@@ -210,7 +210,7 @@ export async function initializeDatabase() {
       }
 
       dbState.dbError = _err instanceof Error ? _err.message : String(_err);
-      console.error("❌ Failed to connect to Hostinger MySQL Database:", _err);
+      console.error("❌ Failed to connect to Hostinger MySQL Database:", dbState.dbError);
       console.warn(
         "⚠️ App will run in memory-safe fallback mode using mock states.",
       );

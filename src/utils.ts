@@ -57,7 +57,7 @@ export function trackEvent(
     contents?: Array<{ id: string; quantity: number; item_price?: number }>;
     contentName?: string;
     contentType?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   },
   customerData?: {
     customerName?: string;
@@ -68,9 +68,10 @@ export function trackEvent(
   },
 ) {
   // 1. Client-side Meta Pixel (if enabled/loaded)
-  if (typeof window !== "undefined" && (window as any).fbq) {
+  const win = typeof window !== "undefined" ? (window as unknown as { fbq?: (...args: unknown[]) => void }) : null;
+  if (win?.fbq) {
     try {
-      (window as any).fbq("track", eventName, {
+      win.fbq("track", eventName, {
         value: customData?.value,
         currency: customData?.currency || "EGP",
         content_ids: customData?.contentIds,

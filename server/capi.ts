@@ -63,7 +63,7 @@ export async function sendMetaCAPIEvent(event: CapiEventData) {
   }
 
   // Prepare hashed user data
-  const userData: Record<string, any> = {};
+  const userData: Record<string, unknown> = {};
 
   if (fn) {
     userData.fn = [sha256(fn)];

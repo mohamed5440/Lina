@@ -1912,10 +1912,11 @@ export default function AdminDashboard({
                               "فشل تغيير كلمة المرور. يرجى التحقق من كلمة المرور الحالية.",
                           });
                         }
-                      } catch (err: any) {
+                      } catch (err: unknown) {
+                        const errorObj = err as { message?: string };
                         setAdminPasswordResult({
                           success: false,
-                          message: `حدث خطأ غير متوقع: ${err?.message || String(err)}`,
+                          message: `حدث خطأ غير متوقع: ${errorObj?.message || String(err)}`,
                         });
                       } finally {
                         setIsChangingAdminPassword(false);
@@ -2066,10 +2067,11 @@ export default function AdminDashboard({
                             message: data.error || "فشل الاتصال بقاعدة البيانات. يرجى مراجعة البيانات الإدخالية.",
                           });
                         }
-                      } catch (err: any) {
+                      } catch (err: unknown) {
+                        const errorObj = err as { message?: string };
                         setDbResultMsg({
                           success: false,
-                          message: `حدث خطأ في الاتصال: ${err?.message || String(err)}`,
+                          message: `حدث خطأ في الاتصال: ${errorObj?.message || String(err)}`,
                         });
                       } finally {
                         setIsConnectingDb(false);

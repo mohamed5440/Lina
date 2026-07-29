@@ -631,8 +631,9 @@ export default function App() {
       }
 
       // Track Purchase with Meta Pixel
-      if (typeof window !== "undefined" && (window as any).fbq) {
-        (window as any).fbq("track", "Purchase", {
+      const win = typeof window !== "undefined" ? (window as unknown as { fbq?: (...args: unknown[]) => void }) : null;
+      if (win?.fbq) {
+        win.fbq("track", "Purchase", {
           value: customerData.totalWithShipping,
           currency: "EGP",
           content_type: "product",
