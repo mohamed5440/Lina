@@ -267,6 +267,34 @@ export async function initializeDatabase() {
       // Create Schema and Seed Initial Catalog
       await createDatabaseSchema(dbState.pool);
     } catch (_err: unknown) {
+      // Automatic fallback if localhost fails (try 127.0.0.1 or vice-versa)
+      const altHost = mysqlHost === "localhost" ? "127.0.0.1" : (mysqlHost === "127.0.0.1" ? "localhost" : null);
+      if (altHost) {
+        try {
+          console.warn(`⚠️ MySQL connection to ${mysqlHost} failed. Trying fallback host: ${altHost}...`);
+          dbState.pool = mysql.createPool({
+            host: altHost,
+            user: mysqlUser,
+            password: mysqlPassword,
+            database: mysqlDatabase,
+            port: mysqlPort,
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0,
+            connectTimeout: 5000,
+          });
+          const conn = await dbState.pool.getConnection();
+          console.log(`✅ MySQL Database connected successfully via fallback host (${altHost}):`, mysqlDatabase);
+          conn.release();
+          dbState.useMySQL = true;
+          dbState.dbError = null;
+          await createDatabaseSchema(dbState.pool);
+          return;
+        } catch (fallbackErr) {
+          // Both main and fallback failed
+        }
+      }
+
       dbState.dbError = _err instanceof Error ? _err.message : String(_err);
       console.error("❌ Failed to connect to Hostinger MySQL Database:", _err);
       console.warn(
