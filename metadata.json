@@ -1,0 +1,8 @@
+{
+  "name": "لينا للعدسات | Lina Lenses",
+  "description": "متجر فاخر للعدسات اللاصقة والملونة الطبية والتجميلية. تصفح تشكيلة فاخرة من الألوان الطبيعية براحة تامة وترطيب يدوم طوال اليوم.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

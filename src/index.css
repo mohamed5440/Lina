@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@100..800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Playpen Sans Arabic", cursive, ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    "Playpen Sans Arabic", cursive, ui-sans-serif, system-ui, sans-serif;
+  --breakpoint-xs: 375px;
+  --color-brand-beige: #f2efe9;
+  --color-brand-cream: #f8f6f0;
+  --color-brand-gold: #fef4b8;
+}
+
+*, ::before, ::after, input, button, select, textarea {
+  font-family: 'Playpen Sans Arabic', cursive, var(--font-sans), sans-serif !important;
+  font-optical-sizing: auto;
+}
+
+html,
+body,
+#root {
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Playpen Sans Arabic', cursive, var(--font-sans), sans-serif;
+  font-optical-sizing: auto;
+  color: #1c1917;
+  line-height: 1.5;
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure images, videos, and SVGs do not overflow container bounds */
+img,
+svg,
+video,
+canvas,
+picture {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Touch manipulation optimization for mobile devices */
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+/* Custom Scrollbar and high-end styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html {
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ltr-input {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Glitter / sketchy brush stroke styling */
+.sketchy-underline {
+  position: relative;
+}
+
+.sketchy-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0,5 Q50,9 100,5' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' opacity='0.85'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
