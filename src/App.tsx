@@ -153,116 +153,98 @@ export default function App() {
   }, []);
 
   const handleUpdateProducts = async (newProducts: Product[]) => {
-    // Delete removed products
     const deleted = products.filter(
       (p) => !newProducts.some((np) => np.id === p.id),
     );
-    for (const dp of deleted) {
-      try {
-        await fetch(`/api/products/${dp.id}`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${adminToken}` },
-        });
-      } catch (e) {
-        console.error("Error deleting product from database:", e);
-      }
-    }
+    const deletePromises = deleted.map((dp) =>
+      fetch(`/api/products/${dp.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${adminToken}` },
+      }).catch((e) => console.error("Error deleting product from database:", e))
+    );
 
-    // Add or update products
-    for (const np of newProducts) {
-      const old = products.find((p) => p.id === np.id);
-      if (!old || JSON.stringify(old) !== JSON.stringify(np)) {
-        try {
-          await fetch("/api/products", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${adminToken}`,
-            },
-            body: JSON.stringify(np),
-          });
-        } catch (e) {
-          console.error("Error writing product to database:", e);
-        }
-      }
-    }
+    const updatePromises = newProducts
+      .filter((np) => {
+        const old = products.find((p) => p.id === np.id);
+        return !old || JSON.stringify(old) !== JSON.stringify(np);
+      })
+      .map((np) =>
+        fetch("/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify(np),
+        }).catch((e) => console.error("Error writing product to database:", e))
+      );
+
+    await Promise.all([...deletePromises, ...updatePromises]);
     setProducts(newProducts);
   };
 
   const handleUpdateCategories = async (newCategories: Category[]) => {
-    // Delete removed categories
     const deleted = categories.filter(
       (c) => !newCategories.some((nc) => nc.id === c.id),
     );
-    for (const dc of deleted) {
-      try {
-        await fetch(`/api/categories/${dc.id}`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${adminToken}` },
-        });
-      } catch (e) {
-        console.error("Error deleting category from database:", e);
-      }
-    }
+    const deletePromises = deleted.map((dc) =>
+      fetch(`/api/categories/${dc.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${adminToken}` },
+      }).catch((e) => console.error("Error deleting category from database:", e))
+    );
 
-    // Add or update categories
-    for (const nc of newCategories) {
-      const old = categories.find((c) => c.id === nc.id);
-      if (!old || JSON.stringify(old) !== JSON.stringify(nc)) {
-        try {
-          await fetch("/api/categories", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${adminToken}`,
-            },
-            body: JSON.stringify(nc),
-          });
-        } catch (e) {
-          console.error("Error writing category to database:", e);
-        }
-      }
-    }
+    const updatePromises = newCategories
+      .filter((nc) => {
+        const old = categories.find((c) => c.id === nc.id);
+        return !old || JSON.stringify(old) !== JSON.stringify(nc);
+      })
+      .map((nc) =>
+        fetch("/api/categories", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify(nc),
+        }).catch((e) => console.error("Error writing category to database:", e))
+      );
+
+    await Promise.all([...deletePromises, ...updatePromises]);
     setCategories(newCategories);
   };
 
   const handleUpdateShippingRates = async (newRates: ShippingRate[]) => {
-    // Check for deleted rates
     const deleted = shippingRates.filter(
       (r) => !newRates.some((nr) => nr.governorate === r.governorate),
     );
-    for (const dr of deleted) {
-      try {
-        await fetch(
-          `/api/shipping-rates/${encodeURIComponent(dr.governorate)}`,
-          {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${adminToken}` },
-          },
-        );
-      } catch (e) {
-        console.error("Error deleting shipping rate", e);
-      }
-    }
+    const deletePromises = deleted.map((dr) =>
+      fetch(
+        `/api/shipping-rates/${encodeURIComponent(dr.governorate)}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${adminToken}` },
+        },
+      ).catch((e) => console.error("Error deleting shipping rate", e))
+    );
 
-    // Add or update rates
-    for (const nr of newRates) {
-      const old = shippingRates.find((r) => r.governorate === nr.governorate);
-      if (!old || old.price !== nr.price) {
-        try {
-          await fetch("/api/shipping-rates", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${adminToken}`,
-            },
-            body: JSON.stringify(nr),
-          });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
+    const updatePromises = newRates
+      .filter((nr) => {
+        const old = shippingRates.find((r) => r.governorate === nr.governorate);
+        return !old || old.price !== nr.price;
+      })
+      .map((nr) =>
+        fetch("/api/shipping-rates", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify(nr),
+        }).catch((e) => console.error("Error updating shipping rate:", e))
+      );
+
+    await Promise.all([...deletePromises, ...updatePromises]);
     setShippingRates(newRates);
   };
 
@@ -285,7 +267,6 @@ export default function App() {
   const handleUpdateNotifications = async (
     newNotifications: NotificationItem[],
   ) => {
-    // Check for deleted notifications
     const deleted = notifications.filter(
       (n) => !newNotifications.some((nn) => nn.id === n.id),
     );
@@ -300,7 +281,6 @@ export default function App() {
       }
     }
 
-    // Add or update notifications
     const updatedWithServerIds = [...newNotifications];
     for (let i = 0; i < updatedWithServerIds.length; i++) {
       const nn = updatedWithServerIds[i];
@@ -345,23 +325,23 @@ export default function App() {
   };
 
   const handleUpdateOrders = async (newOrders: Order[]) => {
-    for (const no of newOrders) {
-      const old = orders.find((o) => o.id === no.id);
-      if (old && old.status !== no.status) {
-        try {
-          await fetch(`/api/orders/${no.id}/status`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${adminToken}`,
-            },
-            body: JSON.stringify({ status: no.status }),
-          });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
+    const updatePromises = newOrders
+      .filter((no) => {
+        const old = orders.find((o) => o.id === no.id);
+        return old && old.status !== no.status;
+      })
+      .map((no) =>
+        fetch(`/api/orders/${no.id}/status`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ status: no.status }),
+        }).catch((e) => console.error("Error updating order status:", e))
+      );
+
+    await Promise.all(updatePromises);
     setOrders(newOrders);
   };
 

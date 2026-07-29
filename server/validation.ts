@@ -6,8 +6,9 @@ export class ValidationError extends Error {
   }
 }
 
-export function validateCategory(data: any) {
-  const { id, name, description, type } = data;
+export function validateCategory(data: unknown) {
+  const d = data as Record<string, unknown>;
+  const { id, name, description, type } = d;
   if (
     typeof id !== "string" ||
     !id.trim() ||
@@ -38,7 +39,8 @@ export function validateCategory(data: any) {
   };
 }
 
-export function validateProduct(data: any) {
+export function validateProduct(data: unknown) {
+  const d = data as Record<string, unknown>;
   const {
     id,
     name,
@@ -52,7 +54,7 @@ export function validateProduct(data: any) {
     diameter,
     duration,
     isNew,
-  } = data;
+  } = d;
 
   const parsedId = parseInt(id);
   if (isNaN(parsedId) || parsedId <= 0) {
@@ -109,8 +111,9 @@ export function validateProduct(data: any) {
   };
 }
 
-export function validateSlide(data: any) {
-  const { id, title1, title2, subtitle, buttonText, image } = data;
+export function validateSlide(data: unknown) {
+  const d = data as Record<string, unknown>;
+  const { id, title1, title2, subtitle, buttonText, image } = d;
   const parsedId = parseInt(id);
   if (isNaN(parsedId) || parsedId <= 0) {
     throw new ValidationError("معرّف الشريحة غير صالح.");
@@ -153,8 +156,9 @@ export function validateSlide(data: any) {
   };
 }
 
-export function validateShippingRate(data: any) {
-  const { governorate, price } = data;
+export function validateShippingRate(data: unknown) {
+  const d = data as Record<string, unknown>;
+  const { governorate, price } = d;
   if (
     typeof governorate !== "string" ||
     !governorate.trim() ||
@@ -172,8 +176,9 @@ export function validateShippingRate(data: any) {
   };
 }
 
-export function validateContactInfo(data: any) {
-  const { whatsapp, phone, email, instagram, facebook, globalSite } = data;
+export function validateContactInfo(data: unknown) {
+  const d = data as Record<string, unknown>;
+  const { whatsapp, phone, email, instagram, facebook, globalSite } = d;
   if (typeof whatsapp !== "string" || whatsapp.length > 50) {
     throw new ValidationError("رقم الواتساب غير صالح.");
   }
@@ -205,8 +210,9 @@ export function validateContactInfo(data: any) {
   };
 }
 
-export function validateNotification(data: any) {
-  const { text, time, unread } = data;
+export function validateNotification(data: unknown) {
+  const d = data as Record<string, unknown>;
+  const { text, time, unread } = d;
   if (typeof text !== "string" || !text.trim() || text.length > 1000) {
     throw new ValidationError("نص التنبيه غير صالح.");
   }
@@ -220,7 +226,8 @@ export function validateNotification(data: any) {
   };
 }
 
-export function validateOrder(data: any) {
+export function validateOrder(data: unknown) {
+  const d = data as Record<string, unknown>;
   const {
     id,
     date,
@@ -233,7 +240,7 @@ export function validateOrder(data: any) {
     total,
     status,
     items,
-  } = data;
+  } = d;
 
   if (typeof id !== "string" || !id.trim() || id.length > 50) {
     throw new ValidationError("معرّف الطلب غير صالح.");

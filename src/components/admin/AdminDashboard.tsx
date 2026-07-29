@@ -91,6 +91,49 @@ export default function AdminDashboard({
     message: string;
   } | null>(null);
 
+  // Hostinger MySQL Config States
+  const [dbHost, setDbHost] = useState("");
+  const [dbUser, setDbUser] = useState("");
+  const [dbPassword, setDbPassword] = useState("");
+  const [dbName, setDbName] = useState("");
+  const [dbPort, setDbPort] = useState("3306");
+  const [dbConnected, setDbConnected] = useState(false);
+  const [isConnectingDb, setIsConnectingDb] = useState(false);
+  const [dbResultMsg, setDbResultMsg] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+
+  React.useEffect(() => {
+    if (isOpen && activeTab === "security") {
+      const token = sessionStorage.getItem("lina_admin_token") || "";
+      fetch("/api/config")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            setDbConnected(!!data.mysqlConnected);
+          }
+        })
+        .catch(() => {});
+
+      if (token) {
+        fetch("/api/db-config", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data && !data.error) {
+              if (data.host) setDbHost(data.host);
+              if (data.user) setDbUser(data.user);
+              if (data.database) setDbName(data.database);
+              if (data.port) setDbPort(String(data.port));
+            }
+          })
+          .catch(() => {});
+      }
+    }
+  }, [isOpen, activeTab]);
+
   const [contactWhatsapp, setContactWhatsapp] = useState(
     contactInfo?.whatsapp || "",
   );
@@ -1955,6 +1998,173 @@ export default function AdminDashboard({
                           <>
                             <Check size={14} />
                             <span>تحديث كلمة مرور لوحة التحكم</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* HOSTINGER MYSQL DATABASE CONFIGURATION CARD */}
+                <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5 sm:p-6 space-y-4 shadow-xs mt-6">
+                  <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="p-1.5 bg-blue-50 text-blue-700 rounded-md">
+                        <UploadCloud size={16} />
+                      </span>
+                      <div>
+                        <h3 className="text-xs font-bold text-stone-900">
+                          إعدادات قاعدة بيانات Hostinger MySQL
+                        </h3>
+                        <p className="text-[10px] text-stone-500 font-bold mt-0.5">
+                          ربط وحفظ بيانات المنتجات، الأقسام، الطلبات والإعدادات بقاعدة بيانات Hostinger
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`w-2.5 h-2.5 rounded-full ${dbConnected ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`} />
+                      <span className={`text-[11px] font-bold ${dbConnected ? "text-emerald-700" : "text-amber-700"}`}>
+                        {dbConnected ? "متصل بقاعدة Hostinger" : "وضع الحفظ المحلي (تأقلم)"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setDbResultMsg(null);
+                      setIsConnectingDb(true);
+
+                      try {
+                        const token = sessionStorage.getItem("lina_admin_token") || "";
+                        const res = await fetch("/api/db-config", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                          },
+                          body: JSON.stringify({
+                            host: dbHost,
+                            user: dbUser,
+                            password: dbPassword,
+                            database: dbName,
+                            port: dbPort,
+                          }),
+                        });
+
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                          setDbResultMsg({
+                            success: true,
+                            message: data.message || "تم الاتصال بقاعدة بيانات Hostinger وحفظ الإعدادات بنجاح! 🟢",
+                          });
+                          setDbConnected(true);
+                          setDbPassword("");
+                        } else {
+                          setDbResultMsg({
+                            success: false,
+                            message: data.error || "فشل الاتصال بقاعدة البيانات. يرجى مراجعة البيانات الإدخالية.",
+                          });
+                        }
+                      } catch (err: any) {
+                        setDbResultMsg({
+                          success: false,
+                          message: `حدث خطأ في الاتصال: ${err?.message || String(err)}`,
+                        });
+                      } finally {
+                        setIsConnectingDb(false);
+                      }
+                    }}
+                    className="space-y-4"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-stone-750 block">
+                          اسم المضيف (Host) *
+                        </label>
+                        <Input
+                          type="text"
+                          required
+                          value={dbHost}
+                          onChange={(e) => setDbHost(e.target.value)}
+                          placeholder="localhost أو IP المضيف"
+                          className="ltr-input font-mono text-xs"
+                          dir="ltr"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-stone-750 block">
+                          اسم المستخدم (Database User) *
+                        </label>
+                        <Input
+                          type="text"
+                          required
+                          value={dbUser}
+                          onChange={(e) => setDbUser(e.target.value)}
+                          placeholder="u123456789_user"
+                          className="ltr-input font-mono text-xs"
+                          dir="ltr"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-stone-750 block">
+                          اسم قاعدة البيانات (Database Name) *
+                        </label>
+                        <Input
+                          type="text"
+                          required
+                          value={dbName}
+                          onChange={(e) => setDbName(e.target.value)}
+                          placeholder="u123456789_lina_db"
+                          className="ltr-input font-mono text-xs"
+                          dir="ltr"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-stone-750 block">
+                          كلمة سر قاعدة البيانات (Password)
+                        </label>
+                        <Input
+                          type="password"
+                          value={dbPassword}
+                          onChange={(e) => setDbPassword(e.target.value)}
+                          placeholder="اتركه فارغاً للحفاظ على القديم"
+                          className="ltr-input font-mono text-xs"
+                          dir="ltr"
+                        />
+                      </div>
+                    </div>
+
+                    {dbResultMsg && (
+                      <div
+                        className={`p-3 rounded text-xs font-bold leading-relaxed flex items-start gap-2 ${dbResultMsg.success ? "bg-emerald-50 text-emerald-800 border border-emerald-100" : "bg-red-50 text-red-800 border border-red-100"}`}
+                      >
+                        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                        <span>{dbResultMsg.message}</span>
+                      </div>
+                    )}
+
+                    <div className="pt-2 border-t border-stone-100 flex flex-col sm:flex-row justify-between items-center gap-3">
+                      <p className="text-[11px] text-stone-500 font-medium text-right">
+                        يتم اختبار الاتصال وإنشاء جداول قاعدة البيانات (Categories, Products, Orders, Rates, Info) تلقائياً عند الحفظ.
+                      </p>
+                      <button
+                        type="submit"
+                        disabled={isConnectingDb}
+                        className="px-6 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-md text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                      >
+                        {isConnectingDb ? (
+                          <>
+                            <div className="w-3.5 h-3.5 border-2 border-stone-200 border-t-stone-800 rounded-full animate-spin" />
+                            <span>جاري الاختبار والربط...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Check size={14} />
+                            <span>اختبار وربط قاعدة بيانات Hostinger</span>
                           </>
                         )}
                       </button>

@@ -34,6 +34,17 @@ import {
 dotenv.config();
 
 const rateLimits = new Map<string, { count: number; resetTime: number }>();
+
+// Periodic cleanup every 10 minutes to prevent memory accumulation
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of rateLimits.entries()) {
+    if (now > record.resetTime) {
+      rateLimits.delete(ip);
+    }
+  }
+}, 10 * 60 * 1000);
+
 const rateLimit = (limit: number, windowMs: number) => {
   return (
     req: express.Request,
