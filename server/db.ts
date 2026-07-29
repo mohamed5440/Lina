@@ -290,7 +290,7 @@ export async function initializeDatabase() {
           dbState.dbError = null;
           await createDatabaseSchema(dbState.pool);
           return;
-        } catch (fallbackErr) {
+        } catch {
           // Both main and fallback failed
         }
       }

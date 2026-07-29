@@ -219,7 +219,7 @@ async function startServer() {
         try {
           const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
           if (config.database) databaseName = config.database;
-        } catch (e) {
+        } catch {
           // ignore
         }
       }
@@ -254,7 +254,7 @@ async function startServer() {
         if (config.database) mysqlDatabase = config.database;
         if (config.port) mysqlPort = String(config.port);
         if (config.password !== undefined) hasPassword = !!config.password;
-      } catch (e) {
+      } catch {
         // ignore
       }
     }
@@ -288,7 +288,7 @@ async function startServer() {
         try {
           const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
           finalPassword = config.password || process.env.MYSQL_PASSWORD || "";
-        } catch (e) {
+        } catch {
           finalPassword = process.env.MYSQL_PASSWORD || "";
         }
       } else {
